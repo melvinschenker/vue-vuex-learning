@@ -28,8 +28,6 @@ const mutations = {
     state.searchQuery = payload.query;
     state.connections = mappedConnections;
     state.connectionsLoading = false
-
-		console.log(state)
   },
 
   setConnectionsLoadingStatus(state) {
