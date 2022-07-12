@@ -16,21 +16,21 @@
           <tr v-for="(obj, index) in connections" :key="index">
             <td>
               {{
-                new Date(obj.connectionDeparture).getHours() +
+                new Date(obj.departure).getHours() +
                   ":" +
-                  padTo2Digits(new Date(obj.connectionDeparture).getMinutes())
+                  padTo2Digits(new Date(obj.departure).getMinutes())
               }}
             </td>
             <td>
               {{
-                new Date(obj.connectionArrival).getHours() +
+                new Date(obj.arrival).getHours() +
                   ":" +
-                  padTo2Digits(new Date(obj.connectionArrival).getMinutes())
+                  padTo2Digits(new Date(obj.arrival).getMinutes())
               }}
             </td>
-            <td>{{ obj.connectionDuration }}</td>
-            <td>{{ obj.connectionJourney }}</td>
-            <td>{{ obj.connectionPlatform }}</td>
+            <td>{{ obj.duration }}</td>
+            <td>{{ obj.journey }}</td>
+            <td>{{ obj.platform }}</td>
           </tr>
         </tbody>
       </table>
