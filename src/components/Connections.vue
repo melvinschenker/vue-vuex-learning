@@ -45,7 +45,7 @@
         </div>
         <div class="col-4">
           <button
-            @click="searchLaterConnections(connections[connections.length - 1])"
+            @click="searchLaterConnections(connections[3])"
             class="btn btn-primary"
           >
             Later Connections
