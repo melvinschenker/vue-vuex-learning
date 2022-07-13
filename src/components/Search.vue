@@ -1,9 +1,33 @@
 <template>
   <div class="container">
     <h1>Transportation Planer</h1>
+
     <input type="datetime-local" v-model="departure" id="departure" />
-    <input type="text" v-model="from" />
-    <input type="text" v-model="to" />
+
+    <datalist id="from">
+      <option v-for="(location, index) in locations" :key="index">
+        {{ location.name }}
+      </option>
+    </datalist>
+    <input
+      autoComplete="on"
+      list="from"
+      v-model="from"
+      v-on:input="(e) => searchLocations({ locationInput: e.target.value })"
+    />
+
+    <datalist id="to">
+      <option v-for="(location, index) in locations" :key="index">
+        {{ location.name }}
+      </option>
+    </datalist>
+    <input
+      autoComplete="on"
+      list="to"
+      v-model="to"
+      v-on:input="(e) => searchLocations({ locationInput: e.target.value })"
+    />
+
     <div>
       <button class="btn" @click="searchConnections({ departure, from, to })">
         Search Connections
@@ -13,7 +37,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapState, mapActions, mapGetters } from "vuex";
 
 export default {
   data() {
@@ -25,11 +49,15 @@ export default {
   },
   computed: {
     ...mapState({
-      connections: (state) => state.connectionSearch.connections,
+      locations: (state) => state.locationSearch.locations,
+    }),
+    ...mapGetters({
+      getLocations: "getLocations",
     }),
   },
   methods: {
     ...mapActions("connectionSearch", ["searchConnections"]),
+    ...mapActions("locationSearch", ["searchLocations"]),
   },
   mounted() {
     console.log("Store mounted: \n", this.$store.state);
