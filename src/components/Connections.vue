@@ -13,25 +13,62 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(obj, index) in connections" :key="index">
-            <td>
-              {{
-                new Date(obj.departure).getHours() +
-                  ":" +
-                  padTo2Digits(new Date(obj.departure).getMinutes())
-              }}
-            </td>
-            <td>
-              {{
-                new Date(obj.arrival).getHours() +
-                  ":" +
-                  padTo2Digits(new Date(obj.arrival).getMinutes())
-              }}
-            </td>
-            <td>{{ obj.duration }}</td>
-            <td>{{ obj.journey }}</td>
-            <td>{{ obj.platform }}</td>
-          </tr>
+          <template v-for="(connection, index) in connections" :key="index">
+            <tr @click="showDetails(`connections_detail_${index}`)">
+              <td>
+                {{
+                  new Date(connection.departure).getHours() +
+                    ":" +
+                    padTo2Digits(new Date(connection.departure).getMinutes())
+                }}
+              </td>
+              <td>
+                {{
+                  new Date(connection.arrival).getHours() +
+                    ":" +
+                    padTo2Digits(new Date(connection.arrival).getMinutes())
+                }}
+              </td>
+              <td>{{ connection.duration }}</td>
+              <td>{{ connection.journey }}</td>
+              <td>{{ connection.platform }}</td>
+            </tr>
+            <tr
+              v-bind:id="'connections_detail_' + index"
+              class="connections_detail"
+            >
+              <td colspan="5">
+                <div class="card-group">
+                  <div
+                    v-for="(section, sectionIndex) in connection.sections"
+                    :key="sectionIndex"
+                  >
+                    <div class="card">
+                      <div class="card-body">
+                        <h5 class="card-title">{{ section.departureTime }},</h5>
+                        <p class="card-text">
+                          {{ section.departureStation }}
+                          {{
+                            section.departurePlatform &&
+                              "- Platform " + section.departurePlatform
+                          }}
+                        </p>
+
+                        <h5>{{ section.arrivalTime }},</h5>
+                        <p class="card-text">
+                          {{ section.arrivalStation }}
+                          {{
+                            section.arrivalPlatform &&
+                              "- Platform " + section.arrivalPlatform
+                          }}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </template>
         </tbody>
       </table>
       <div class="row justify-content-between">
@@ -85,6 +122,14 @@ export default {
     padTo2Digits(num) {
       return String(num).padStart(2, "0");
     },
+    showDetails(connectionId) {
+      const connectionDetail = document.getElementById(connectionId);
+      if (connectionDetail.style.display === "table-row") {
+        connectionDetail.style.display = "none";
+      } else {
+        connectionDetail.style.display = "table-row";
+      }
+    },
   },
 };
 </script>
@@ -109,5 +154,8 @@ export default {
 
 .bold {
   font-weight: 900;
+}
+.connections_detail {
+  display: none;
 }
 </style>

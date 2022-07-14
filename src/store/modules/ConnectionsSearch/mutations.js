@@ -18,7 +18,17 @@ export function addConnectionToState(state, payload) {
     const duration = formatDuration(get(connection, 'duration'));
     const journey = get(connection, 'products[0]');
     const platform = get(connection, 'from.platform');
-    const sections = get(connection, 'sections');
+    const sections = get(connection, 'sections') && get(connection, 'sections').map(section => {
+      return ({
+        departureTime: moment(section.departure.departure).format('HH:mm'),
+        departureStation: section.departure.station.name,
+        departurePlatform: section.departure.platform,
+        arrivalTime: moment(section.arrival.arrival).format('HH:mm'),
+        arrivalStation: section.arrival.station.name,
+        arrivalPlatform: section.arrival.platform,
+        sectionJourney: section.journey,
+      })
+    });
 
     return ({
       departure,
