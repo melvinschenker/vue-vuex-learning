@@ -14,25 +14,10 @@
         </thead>
         <tbody>
           <template v-for="(connection, index) in connections" :key="index">
-            <tr @click="showDetails(`connections_detail_${index}`)">
-              <td>
-                {{
-                  new Date(connection.departure).getHours() +
-                    ":" +
-                    padTo2Digits(new Date(connection.departure).getMinutes())
-                }}
-              </td>
-              <td>
-                {{
-                  new Date(connection.arrival).getHours() +
-                    ":" +
-                    padTo2Digits(new Date(connection.arrival).getMinutes())
-                }}
-              </td>
-              <td>{{ connection.duration }}</td>
-              <td>{{ connection.journey }}</td>
-              <td>{{ connection.platform }}</td>
-            </tr>
+            <Connection
+              v-bind:connection="connection"
+              v-bind:connectionIndex="index"
+            />
 
             <ConnectionDetails
               v-bind:sections="connection.sections"
@@ -74,6 +59,7 @@
 <script>
 import { mapState, mapGetters, mapActions } from "vuex";
 import ConnectionDetails from "./ConnectionDetails.vue";
+import Connection from "./Connection.vue";
 
 export default {
   computed: {
@@ -90,19 +76,9 @@ export default {
       "searchEarlierConnections",
       "searchLaterConnections",
     ]),
-    padTo2Digits(num) {
-      return String(num).padStart(2, "0");
-    },
-    showDetails(connectionId) {
-      const connectionDetail = document.getElementById(connectionId);
-      if (connectionDetail.style.display === "table-row") {
-        connectionDetail.style.display = "none";
-      } else {
-        connectionDetail.style.display = "table-row";
-      }
-    },
   },
   components: {
+    Connection,
     ConnectionDetails,
   },
 };
