@@ -33,41 +33,11 @@
               <td>{{ connection.journey }}</td>
               <td>{{ connection.platform }}</td>
             </tr>
-            <tr
-              v-bind:id="'connections_detail_' + index"
-              class="connections_detail"
-            >
-              <td colspan="5">
-                <div class="card-group">
-                  <div
-                    v-for="(section, sectionIndex) in connection.sections"
-                    :key="sectionIndex"
-                  >
-                    <div class="card">
-                      <div class="card-body">
-                        <h5 class="card-title">{{ section.departureTime }},</h5>
-                        <p class="card-text">
-                          {{ section.departureStation }}
-                          {{
-                            section.departurePlatform &&
-                              "- Platform " + section.departurePlatform
-                          }}
-                        </p>
 
-                        <h5>{{ section.arrivalTime }},</h5>
-                        <p class="card-text">
-                          {{ section.arrivalStation }}
-                          {{
-                            section.arrivalPlatform &&
-                              "- Platform " + section.arrivalPlatform
-                          }}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </td>
-            </tr>
+            <ConnectionDetails
+              v-bind:sections="connection.sections"
+              v-bind:connectionIndex="index"
+            />
           </template>
         </tbody>
       </table>
@@ -103,6 +73,7 @@
 
 <script>
 import { mapState, mapGetters, mapActions } from "vuex";
+import ConnectionDetails from "./ConnectionDetails.vue";
 
 export default {
   computed: {
@@ -130,6 +101,9 @@ export default {
         connectionDetail.style.display = "table-row";
       }
     },
+  },
+  components: {
+    ConnectionDetails,
   },
 };
 </script>
